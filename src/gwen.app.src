@@ -1,0 +1,27 @@
+{application, gwen, [
+	{description, "An Erlang IRC bot"},
+	{vsn, "0.0.2"},
+	{applications, [kernel, stdlib, crypto, ssl]},
+	{modules, [gwen, gwen_db_worker, gwen_irc_worker]},
+	{registered, [gwen]},
+	{mod, {gwen, []}},
+	{env, [
+		{irc, [
+			{nickname, "Gwen"},
+			{hostname, "irc.rartm.com"},
+			{port, 6667},
+			{password, ""}
+		]},
+		{pools, [
+			{main, [
+				{size, 3},
+				{max_overflow, 5}
+			], [
+				{hostname, "127.0.0.1"},
+				{database, "gwen"},
+				{username, "gwen"},
+				{password, "gw3n"}
+			]}
+		]}
+	]}
+]}.
