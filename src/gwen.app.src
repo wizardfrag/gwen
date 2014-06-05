@@ -9,6 +9,7 @@
 		{irc, [
 			{nickname, "Gwen"},
 			{hostname, "irc.rartm.com"},
+			{realname, "Gwen Bot"},
 			{port, 6667},
 			{password, ""}
 		]},
@@ -22,6 +23,18 @@
 				{username, "gwen"},
 				{password, "gw3n"}
 			]}
+		]},
+		{lager, [
+			{colored, true},
+			{handlers, [
+				{lager_console_backend, info},
+				{lager_file_backend, [{file, "error.log"}, {level, error}]},
+				{lager_file_backend, [{file, "console.log"}, {level, info}]}
+			]}
+		]},
+		{commands, [
+			{"commands", gwen_commands, commands},
+			{"test", gwen_commands, cmd_test}
 		]}
 	]}
 ]}.
