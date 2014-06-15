@@ -49,7 +49,7 @@ handle_info(Message, State) ->
 	{noreply, State}.
 
 terminate(_Reason, _State) ->
-	lager:fatal("Terminating...").
+	lager:critical("gwen_db Terminating...").
 
 code_change(_OldVsn, State, _Extra) ->
 	{ok, State}.
