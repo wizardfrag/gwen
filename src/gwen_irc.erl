@@ -9,7 +9,7 @@
 -export([raw/1, nick/1, privmsg/2, notice/2, register_command/3, unregister_command/1, quit/0]).
 
 -include("irc.hrl").
--define(CMD_CHAR, $$).
+-define(CMD_CHAR, $.).
 
 start_link(Args) ->
 	gen_server:start_link({local, gwen_irc}, ?MODULE, Args, []).
