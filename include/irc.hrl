@@ -1,2 +1,2 @@
--record(state, {connection, conn_options, nickname, commands=[]}).
+-record(state, {connection, conn_options, nickname, commands=[], channels=[]}).
 -record(gwen_user, {nickname, ident, host}).

@@ -11,7 +11,11 @@
 			{hostname, "irc.rartm.com"},
 			{realname, "Gwen Bot"},
 			{port, 6667},
-			{password, ""}
+			{password, ""},
+			{channels, [
+				"#rartm",
+				"#rartm.dev"
+			]}
 		]},
 		{pools, [
 			{main, [

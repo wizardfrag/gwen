@@ -21,12 +21,13 @@ init(Args) ->
 	Nickname  = proplists:get_value(nickname, Args, "Gwen"),
 	Realname  = proplists:get_value(realname, Args, "Gwen Bot"),
 	Password  = proplists:get_value(password, Args, ""),
+	Channels  = proplists:get_value(channels, Args, []),
 	lager:info("Connecting to IRC on ~s/~p...", [Hostname, Port]),
 	{ok, Conn} = gen_tcp:connect(Hostname, Port, [{packet, line}, {active, once}, {recbuf, 512}], 5000),
 	lager:info("Connected to IRC"),
 	gwen_commands:init(),
 	irc_register(Nickname, Realname, Password),
-	{ok, #state{connection=Conn, conn_options=Args}}.
+	{ok, #state{connection=Conn, conn_options=Args, channels=Channels}}.
 
 handle_call(Request, _From, State) ->
 	io:format("Call: ~p | State: ~p~n", [Request, State]),
@@ -99,10 +100,17 @@ parse_line([_Server,"433",_,Nickname|_], State) ->
 	raw("NICK " ++ Newnick),
 	{ok, State};
 parse_line([_Server,"001",Nickname|_Rest], State) ->
-	raw("JOIN #rartm,#rartm.dev"),
+	lager:info("Joining default channels: ~s", [string:join(State#state.channels, ", ")]),
+	join_channels(State#state.channels),
 	{ok, State#state{nickname=Nickname}};
 parse_line(_Line, State) ->
 	{ok, State}.
+
+join_channels([]) ->
+	ok;
+join_channels([H|T]) ->
+	raw(io_lib:format("JOIN ~s", [H])),
+	join_channels(T).
 
 parse_user(User) ->
 	[Nickname, Ident, Host] = string:tokens(strip_colon(User), "!@"),
