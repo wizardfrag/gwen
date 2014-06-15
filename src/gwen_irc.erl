@@ -94,9 +94,10 @@ parse_line([RawUser, "PRIVMSG", Target | RawMessage], State) ->
 	Message = strip_colon(string:join(RawMessage, " ")),
 	handle_privmsg(User, Target, Message),
 	{ok, State};
-parse_line([_Server,"433",_,_Nickname|_], State) ->
-	Newnick = State#state.nickname ++ "1",
-	raw("NICK " ++ Newnick);
+parse_line([_Server,"433",_,Nickname|_], State) ->
+	Newnick = Nickname ++ "1",
+	raw("NICK " ++ Newnick),
+	{ok, State};
 parse_line([_Server,"001",Nickname|_Rest], State) ->
 	raw("JOIN #rartm,#rartm.dev"),
 	{ok, State#state{nickname=Nickname}};
